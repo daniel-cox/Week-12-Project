@@ -33,10 +33,17 @@ async function createFoodApp(foodGroup){
      let recipeImageURL = recipeData.image
      let recipeID = recipeData.id
      let recipeInstructions = recipeData.instructions
-     let recipePrepTime = recipeData.preparationMinutes
+     let recipePrepTime = recipeData.readyInMinutes
      let foodImageCard = document.getElementById("foodImageCard")
-
+     let foodTitle = recipeData.title
+     let cuisineType = recipeData.cuisines
        foodImageCard.innerHTML = html`<div id ="recipeID-${recipeID}"><img src="${recipeImageURL}" class="recipeImage img-fluid">
+        <br>
+        <span>Dish Name:</span><div class = "foodTitle">${foodTitle}</div>
+        <br>
+        <span>Cuisine Type:</span><div class = "cuisineType">${cuisineType}</div>
+        <br>
+        <span>Time To Cook:</span><div class = "foodTime">${recipePrepTime} minutes</div>
         <br>
         ${recipeInstructions}
     </div>`
