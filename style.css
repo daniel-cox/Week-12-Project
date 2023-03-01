@@ -1,15 +1,115 @@
-    .backgroundImg {
-        background-repeat: no-repeat;
-        position: fixed;
-        filter: blur(8px);
-        z-index: -1;
-    }
-
-    body{
-        color:#fff;
-        background-color: #000;
-    }
-
-    img.recipeImage.img-fluid {
-        padding-bottom: 1rem;
-    }
+/* Background Image */
+.backgroundImg {
+    position: fixed;
+    z-index: -1;
+    filter: blur(8px);
+    background-repeat: no-repeat;
+  }
+  
+  /* Body Styling */
+  body {
+    background-color: #000;
+    color: #040f29;
+  }
+  
+  /* Recipe Image Styling */
+  img.recipeImage.img-fluid {
+    padding-bottom: 1rem;
+  }
+  
+  /* Company Description Styling */
+  .companyDesc {
+    background-color: #fff;
+  }
+  
+  /* Food Search Styling */
+  #foodSearch {
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    display: inline-flex;
+    height: 40px;
+    padding-right: 40px;
+    width: 90%;
+  }
+  
+  /* Ion Icon Styling */
+  #foodSearch + ion-icon {
+    position: sticky;
+    transform: translate(-40px, 2px);
+  }
+  
+  ion-icon {
+    background-color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    padding: 10px;
+  }
+  
+  /* Card Styling */
+  .card {
+    display: flex;
+    margin: 0 auto;
+    max-width: 95%;
+    width: 500px;
+  }
+  
+  /* Ordered List Styling */
+  ol {
+    max-width: 95%;
+  }
+  
+  ol li {
+    padding-top: 5px;
+    text-align: center;
+  }
+  
+  /* Recipe ID Styling */
+  
+  #recipeID {
+    text-align: center;
+    padding: 10px;
+}
+  
+  /* Form Styling */
+  form {
+    display: flex;
+    margin: 0 auto;
+    padding-bottom: 1rem;
+  }
+  /*Submit Button Styling*/
+  button.btn.btn-primary.mt-2 {
+    float: right;
+    margin-right: 10px;
+}
+  
+  /* Rating Styling */
+  #rating {
+    align-content: center;
+    display: flex;
+    font-size: 3rem;
+    margin: 0 auto;
+    padding-bottom: 0rem;
+  }
+  
+  /* Button Styling */
+  #submitReview {
+    display: inherit;
+    margin: 0 auto;
+  }
+  
+  /* Form Label Styling */
+  label.form-label {
+    padding-left: 10px;
+  }
+  
+  /* Star Styling */
+  .star {
+    color: #ddd;
+    cursor: pointer;
+  }
+  
+  /* Active Star Styling */
+  .star.active {
+    color: gold;
+  }  

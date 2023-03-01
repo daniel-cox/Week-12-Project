@@ -1,56 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <!-- Metadata -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Title -->
     <title>Food App</title>
-    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./style.css">
-</head>
-<body class="container-fluid">
-    <div class="backgroundImg"> <img src="./img/webBG.png" alt=""></div>
-    <div class="row justify-content-md-center"> <!-- row for logo-->
-        <div class="col-md colCell "></div>
-       <div class="col-md-auto colCell logo">
-        <img src="./img/recipeFinderLogo.png" alt="Recipe Finder Logo">
-       </div>        
-       <div class="col-md colCell"></div>
-    </div> 
-    <div class="row"> <!-- Row for main content-->
-        <div class="col-md-3 colCell "></div>
+    <!-- Stylesheets -->
+    <link
+      rel="stylesheet"
+      href="./node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body class="container-fluid">
+    <!-- Background image -->
+    <div class="backgroundImg"><img src="./img/webBG.png" alt="" /></div>
 
-        <div class="col-md-6 colCell">
-                  <label for="" class="form-label"></label>
-                  <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-4"><input type="text" class="form-control" id="foodSearch" placeholder="Cheese,Pepper,etc">
-                        </div>
-                        <div class="col-md-4">
-                    <button class="alert alert-danger" id="submitBtn" type="submit">Submit</button>
-                </div>
-                        </div>
-                        </div>
-                </div>
-                <div class="col-md-3 colCell "></div>
+    <!-- Logo -->
+    <div class="row justify-content-md-center">
+      <!-- row for logo-->
+      <div class="col-md colCell"></div>
+      <div class="col-md-auto colCell logo">
+        <img src="./img/recipeFinderLogo.png" alt="Recipe Finder Logo" />
+      </div>
+      <div class="col-md colCell"></div>
+    </div>
 
-        </div>
-        <div class="row justify-content-md-center">
-            <div class="col-md colCell "></div>
-                    <h1>Jumbotron Example</h1>
-                 <div class="col-md-auto img-fluid" id="foodImageCard">
-                
+    <!-- Company Description -->
+    <div class="row">
+      <div class="col-md-6 mx-auto">
+        <p class="companyDesc">
+          Happy Foods: recipe finder is a one-stop-shop for foodies and home
+          cooks looking to discover new and delicious recipes. Our platform
+          offers a vast collection of recipes from all around the world, ranging
+          from quick and easy meals to more complex dishes for special
+          occasions.
+          <br />
+          <br />
+          Our mission is to make cooking fun and accessible for everyone,
+          regardless of their culinary experience. We believe that food brings
+          people together, and that's why we're committed to helping our users
+          find the perfect recipes for every occasion.
+          <br />
+          <br />
+          Our website features an easy-to-use search function that allows users
+          to filter recipes based on dietary restrictions, ingredients, cooking
+          time, and more. We also offer personalized recipe recommendations
+          based on users' preferences and browsing history.
+          <br />
+          <br />
+          At Happy Foods: recipe finder, we are passionate about food and
+          committed to providing our users with the best possible experience. We
+          work with top chefs and food bloggers to curate our recipe collection
+          and ensure that every recipe on our platform is tested and approved by
+          our team of experts.
+          <br />
+          <br />
+          Join us on our mission to discover new flavors, try new recipes, and
+          create happy memories around the dinner table.
+        </p>
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="row">
+      <!-- Row for main content-->
+      <div class="col-md-3 colCell"></div>
+      <div class="col-md-6 colCell">
+        <label for="" class="form-label"></label>
+        <div class="container-fluid">
+          <div class="row searchClass">
+            <div class="col-md-4 mx-auto">
+              <form>
+                <input
+                  type="text"
+                  id="foodSearch"
+                  placeholder="Milk, Egg, Cheese, etc.."
+                />
+                <ion-icon name="search"></ion-icon>
+              </form>
             </div>
-            <div class="col-md colCell "></div>
-
+          </div>
         </div>
+      </div>
+      <div class="col-md-3 colCell"></div>
+    </div>
 
+    <!-- Card Section -->
+    <div class="card">
+      <div class="col-md-auto img-fluid" id="foodImageCard"></div>
+      <div class="card-body"></div>
+      <div class="col-md-auto img-fluid" id="foodImageCard"></div>
+      <div class="col-md colCell"></div>
+      <div id="rating">
+        <span class="star" value="star-1" data-value="1">&#9733;</span>
+        <span class="star" value="star-2" data-value="2">&#9733;</span>
+        <span class="star" value="star-3" data-value="3">&#9733;</span>
+        <span class="star" value="star-4" data-value="4">&#9733;</span>
+        <span class="star" value="star-5" data-value="5">&#9733;</span>
+      </div>
 
+      <label for="foodRatingLabel" class="form-label"
+        >leave a review (max 150 characters)</label
+      >
+      <textarea
+        class="form-control"
+        id="foodRatingTextArea"
+        rows="5"
+        maxlength="150"
+      ></textarea>
+      <button type="button" class="btn btn-primary mt-2" id="submitReview">
+        Submit Review
+      </button>
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
 
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
     <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./node_modules/jquery/dist/jquery.min.js"></script>
     <script src="./index.js"></script>
-</body>
+  </body>
 </html>
-
-https
