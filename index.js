@@ -38,13 +38,26 @@ async function createFoodApp(foodGroup) {
   console.log("createFoodApp foodGroup");
 
   // Make a GET request to the API to retrieve random recipe data
-  const apiData = await $.ajax({
-    url: apiEndPointUrl,
-    type: "GET",
-    contentType: "application/json",
-  }).catch((error) => {
-    console.log("Oh no there was an error:", error);
-  });
+  // const apiData = await $.ajax({
+  //   url: apiEndPointUrl,
+  //   type: "GET",
+  //   contentType: "application/json",
+  // }).catch((error) => {
+  //   console.log("Oh no there was an error:", error);
+  // });
+
+  // Create an object called "apiData" that contains an array called "recipes"
+  let apiData = {
+    recipes: [
+      {
+        // Adds an object to the "recipes" array
+        id: 123,
+        title: "Chicken Pasta Salad",
+        instructions:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed blandit dictum ipsum. Sed id scelerisque risus, eget tincidunt sem. Nullam at pellentesque lorem. Maecenas rhoncus euismod ex in pulvinar. Suspendisse nec magna leo. Ut congue ipsum ut augue mollis, vel vestibulum ex ultricies. Fusce sit amet tortor nibh. Praesent mollis molestie urna, in posuere ligula egestas quis. Vivamus porta aliquet justo, sollicitudin commodo ex. Praesent sit amet purus tortor. Nunc pellentesque risus erat, non posuere lacus vestibulum ac. Integer posuere sapien nec nunc fringilla scelerisque. Pellentesque quis neque laoreet, laoreet tellus in, suscipit justo",
+      },
+    ],
+  };
 
   // Log the recipe data to the console for debugging purposes
   console.log(apiData.recipes);
@@ -72,7 +85,7 @@ async function createFoodApp(foodGroup) {
     <span>Time To Cook:</span>
     <div class="foodTime">${recipePrepTime} minutes</div>
     <br />
-    ${recipeInstructions}
+    <div class="foodDescription">${recipeInstructions}</div>
   </div>`;
 }
 
@@ -118,19 +131,70 @@ submitReviewBtn.addEventListener("click", () => {
   for (let i = 0; i < currentStars.length; i++) {
     let activeStars = currentStars[i].classList.contains("active");
 
+    // Check if the current star is active
     if (activeStars === true) {
       newReviewInstance.Stars++;
     }
   }
 
+  // Get the value of the text area with the ID "foodRatingTextArea"
   let StoredReview = document.getElementById("foodRatingTextArea").value;
   console.log("stored data", StoredReview);
 
+  // Set the Review property of newReviewInstance to the stored review
   newReviewInstance.Review = StoredReview;
   console.log("incremented star rating", newReviewInstance);
 
+  // Call the postReview function with the new review instance as an argument
   postReview(newReviewInstance);
 });
+
+// Asynchronously get review data from Mock API
+async function GetReviews() {
+  try {
+    // Fetch review data from mock API using jQuery's $.get() method
+    const reviewData = await $.get(
+      "https://63fe9c51c5c800a72382eca5.mockapi.io/Promineo_Tech_Week12/happyfoods"
+    );
+
+    // Get a reference to the review container element
+    const reviewContainer = document.getElementById("reviewContainer");
+
+    // Get the first review in the response data array
+    const firstReview = reviewData[0];
+
+    console.log();
+
+    // Create a new review element
+    const reviewElement = document.createElement("div");
+
+    // Set the review element's content to the review text
+    reviewElement.textContent = firstReview.reviewText;
+
+    // Append the review element to the review container
+    reviewContainer.appendChild(reviewElement);
+  } catch (error) {
+    console.error(
+      "There was an error displaying the product review, please try again.",
+      error
+    );
+  }
+}
+
+// let foodReviews = document.getElementById("reviewContainer")
+// let reviewData = await $.get(
+//   "https://63fe9c51c5c800a72382eca5.mockapi.io/Promineo_Tech_Week12/happyfoods"
+// );
+// console.log(reviewData);
+
+// Call the GetReviews function to retrieve review data from the API
+GetReviews();
+
+//TODO
+
+//TODO Delete specific reviews by ID
+
+//TODO Update Existing review Data by ID
 
 // Call the createFoodApp function to display a random recipe on page load
 createFoodApp();
