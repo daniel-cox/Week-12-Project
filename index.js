@@ -89,12 +89,12 @@ async function createFoodApp(foodGroup) {
 }
 
 // Get all stars by class
-const stars = document.querySelectorAll(".star");
+let stars = document.querySelectorAll(".star");
 
 // Add click event listener to each star
 stars.forEach((star) => {
   star.addEventListener("click", () => {
-    const value = star.getAttribute("data-value");
+    let value = star.getAttribute("data-value");
 
     // Remove active class from all stars
     stars.forEach((s) => s.classList.remove("active"));
@@ -153,6 +153,7 @@ submitReviewBtn.addEventListener("click", () => {
     getReviews();
   }, "100");
 });
+
 // Asynchronously get review data from Mock API
 async function getReviews() {
   console.log("getting reviews");
@@ -172,7 +173,7 @@ async function getReviews() {
       let reviewElement = document.createElement("div");
       review.id;
       // Set the review element's content to the review text
-      reviewElement.innerHTML = html`<div clas="card reviewCard">
+      reviewElement.innerHTML = html`<div class="card reviewCard">
           <button
             type="button"
             id="delete-btn-${review.id}"
@@ -196,7 +197,8 @@ async function getReviews() {
         >
           Edit Review
         </button>
-        <hr /> `;
+        <hr />
+        <div id="editForm"></div> `;
 
       setTimeout(() => {
         editExistingReview(review.id);
@@ -250,6 +252,51 @@ function deleteExistingReview(deleteReviewID) {
 
 //TODO Update Existing review Data by ID
 
+function newReview() {
+  let editForm = document.getElementById("editForm");
+  let reviewModal = document.createElement("modal");
+  let closeModal = false;
+
+  while (closeModal === false) {
+    reviewModal.innerHTML = "";
+    reviewModal.innerHTML = html`
+      <div id="rating">
+        <span class="star" value="star-1" data-value="1">&#9733;</span>
+        <span class="star" value="star-2" data-value="2">&#9733;</span>
+        <span class="star" value="star-3" data-value="3">&#9733;</span>
+        <span class="star" value="star-4" data-value="4">&#9733;</span>
+        <span class="star" value="star-5" data-value="5">&#9733;</span>
+      </div>
+
+      <label for="foodRatingLabel" class="form-label"
+        >Update your Review (max 150 characters)</label
+      >
+      <textarea
+        class="form-control"
+        id="foodRatingTextArea"
+        rows="5"
+        maxlength="150"
+      ></textarea>
+      <button type="button" class="btn btn-primary mt-2" id="submitReview">
+        Update Review
+      </button>
+    `;
+    editForm.appendChild(reviewModal);
+
+    // need to get values of the stars & review form
+    if ()
+
+    // after the values have been obtained, close the modal
+    // set close modal equal to true
+
+    closeModal = true;
+  }
+  closeModal = false;
+  reviewModal.innerHTML = "";
+
+  console.log(editForm);
+}
+
 function editExistingReview(editReviewID) {
   console.log("Editing review", editReviewID);
   let editReviewBtn = document.getElementById(`edit-btn-${editReviewID}`);
@@ -258,8 +305,12 @@ function editExistingReview(editReviewID) {
     console.log("You have edited your review", editReviewID);
     let editReviewURL = `https://63fe9c51c5c800a72382eca5.mockapi.io/Promineo_Tech_Week12/happyfoods/${editReviewID}`;
 
-    //
+    //have a form specifically for editing the review
+    // pass stars and review values into 268/269
 
+    newReview();
+    let newStarRating = "";
+    let newReviewData = "";
     // $.ajax({
     //   //return the ajax request
     //   url: editReviewURL,
@@ -272,9 +323,9 @@ function editExistingReview(editReviewID) {
     //   contentType: "application/json", //set the content type to be json
     //   crossDomain: true, //set the cross domain to be true
     // });
-    setTimeout(() => {
-      getReviews();
-    }, "100");
+    // setTimeout(() => {
+    //   getReviews();
+    // }, "100");
   });
 }
 
