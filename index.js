@@ -10,7 +10,7 @@ let html = (strings, ...values) => {
 // Get submit button by ID
 let submitBtn = document.getElementById("submitBtn");
 
-async function postReview(reviewData) {
+async function postReview(reviewData, foodTitleReview) {
   console.log("testing the post", reviewData);
   let reviewPostURL =
     "https://63fe9c51c5c800a72382eca5.mockapi.io/Promineo_Tech_Week12/happyfoods";
@@ -19,6 +19,7 @@ async function postReview(reviewData) {
     url: reviewPostURL,
     data: JSON.stringify({
       Stars: reviewData.Stars,
+      Title: foodTitleReview,
       Review: reviewData.Review,
     }), //pass the food group to be created and turns it into JSON data
     dataType: "json", //set the data type to be json
@@ -34,32 +35,30 @@ async function createFoodApp(foodGroup) {
   const apikey = "4415612910a64dc9a7243128dc4b6ac0";
   const apiEndPointUrl = `https://api.spoonacular.com/recipes/random?apiKey=${apikey}`;
 
-  // Log a message to indicate that the function is running
   console.log("createFoodApp foodGroup");
 
-  // Make a GET request to the API to retrieve random recipe data
-  // const apiData = await $.ajax({
-  //   url: apiEndPointUrl,
-  //   type: "GET",
-  //   contentType: "application/json",
-  // }).catch((error) => {
-  //   console.log("Oh no there was an error:", error);
-  // });
+  //Make a GET request to the API to retrieve random recipe data
+  const apiData = await $.ajax({
+    url: apiEndPointUrl,
+    type: "GET",
+    contentType: "application/json",
+  }).catch((error) => {
+    console.log("Oh no there was an error:", error);
+  });
 
   // Create an object called "apiData" that contains an array called "recipes"
-  let apiData = {
-    recipes: [
-      {
-        // Adds an object to the "recipes" array
-        id: 123,
-        title: "Chicken Pasta Salad",
-        instructions:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed blandit dictum ipsum. Sed id scelerisque risus, eget tincidunt sem. Nullam at pellentesque lorem. Maecenas rhoncus euismod ex in pulvinar. Suspendisse nec magna leo. Ut congue ipsum ut augue mollis, vel vestibulum ex ultricies. Fusce sit amet tortor nibh. Praesent mollis molestie urna, in posuere ligula egestas quis. Vivamus porta aliquet justo, sollicitudin commodo ex. Praesent sit amet purus tortor. Nunc pellentesque risus erat, non posuere lacus vestibulum ac. Integer posuere sapien nec nunc fringilla scelerisque. Pellentesque quis neque laoreet, laoreet tellus in, suscipit justo",
-      },
-    ],
-  };
+  // let apiData = {
+  //   recipes: [
+  //     {
+  //       // Adds an object to the "recipes" array
+  //       id: 123,
+  //       title: "Chicken Pasta Salad",
+  //       instructions:
+  //         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed blandit dictum ipsum. Sed id scelerisque risus, eget tincidunt sem. Nullam at pellentesque lorem. Maecenas rhoncus euismod ex in pulvinar. Suspendisse nec magna leo. Ut congue ipsum ut augue mollis, vel vestibulum ex ultricies. Fusce sit amet tortor nibh. Praesent mollis molestie urna, in posuere ligula egestas quis. Vivamus porta aliquet justo, sollicitudin commodo ex. Praesent sit amet purus tortor. Nunc pellentesque risus erat, non posuere lacus vestibulum ac. Integer posuere sapien nec nunc fringilla scelerisque. Pellentesque quis neque laoreet, laoreet tellus in, suscipit justo",
+  //     },
+  //   ],
+  // };
 
-  // Log the recipe data to the console for debugging purposes
   console.log(apiData.recipes);
 
   // Extract relevant recipe data from the API response
@@ -113,6 +112,7 @@ let submitReviewBtn = document.getElementById("submitReview");
 class StoredStarProperties {
   constructor(reviewValue) {
     this.Stars = 0;
+    this.Title = "";
     this.Review = reviewValue;
   }
 }
@@ -144,41 +144,77 @@ submitReviewBtn.addEventListener("click", () => {
   // Set the Review property of newReviewInstance to the stored review
   newReviewInstance.Review = StoredReview;
   console.log("incremented star rating", newReviewInstance);
+  let foodTitle = document.querySelector(".foodTitle").textContent;
+  // console.log("logging food title", foodTitle.textContent);
 
   // Call the postReview function with the new review instance as an argument
-  postReview(newReviewInstance);
+  postReview(newReviewInstance, foodTitle);
+  setTimeout(() => {
+    getReviews();
+  }, "100");
 });
-
 // Asynchronously get review data from Mock API
-async function GetReviews() {
+async function getReviews() {
+  console.log("getting reviews");
   try {
-    // Fetch review data from mock API using jQuery's $.get() method
+    // Fetch review data from mock API
     const reviewData = await $.get(
       "https://63fe9c51c5c800a72382eca5.mockapi.io/Promineo_Tech_Week12/happyfoods"
     );
 
     // Get a reference to the review container element
-    const reviewContainer = document.getElementById("reviewContainer");
+    let reviewContainer = document.getElementById("reviewContainer");
+    reviewContainer.innerHTML = "";
+    // Loop through the array and create a new review element for each review
+    reviewData.forEach((review) => {
+      console.log(review);
+      // Create a new review element
+      let reviewElement = document.createElement("div");
+      review.id;
+      // Set the review element's content to the review text
+      reviewElement.innerHTML = html`<div clas="card reviewCard">
+          <button
+            type="button"
+            id="delete-btn-${review.id}"
+            class="btn btn-danger"
+          >
+            x
+          </button>
+          <br />
+          <br />
+          <b>Rating:</b> ${review.Stars} stars
+        </div>
+        <br />
+        <b>Food Name:</b> ${review.Title}
+        <br />
+        <b>Review:</b> ${review.Review}
+        <br />
+        <button
+          type="button"
+          id="edit-btn-${review.id}"
+          class="btn btn-warning"
+        >
+          Edit Review
+        </button>
+        <hr /> `;
 
-    // Get the first review in the response data array
-    const firstReview = reviewData[0];
-
-    console.log();
-
-    // Create a new review element
-    const reviewElement = document.createElement("div");
-
-    // Set the review element's content to the review text
-    reviewElement.textContent = firstReview.reviewText;
-
-    // Append the review element to the review container
-    reviewContainer.appendChild(reviewElement);
+      setTimeout(() => {
+        editExistingReview(review.id);
+        deleteExistingReview(review.id);
+      }, "0");
+      // Append the review element to the review container
+      reviewContainer.appendChild(reviewElement);
+    });
   } catch (error) {
     console.error(
       "There was an error displaying the product review, please try again.",
       error
     );
   }
+}
+
+function RetrieveReviews(RetrieveReviews) {
+  console.log("Review Data displayed here:", RetrieveReviews);
 }
 
 // let foodReviews = document.getElementById("reviewContainer")
@@ -188,13 +224,59 @@ async function GetReviews() {
 // console.log(reviewData);
 
 // Call the GetReviews function to retrieve review data from the API
-GetReviews();
-
-//TODO
+getReviews();
 
 //TODO Delete specific reviews by ID
 
+function deleteExistingReview(deleteReviewID) {
+  console.log("Deleting review", deleteReviewID);
+
+  let deleteReviewBtn = document.getElementById(`delete-btn-${deleteReviewID}`);
+  console.log(deleteReviewBtn);
+  deleteReviewBtn.addEventListener("click", () => {
+    console.log("review has been deleted");
+    let deleteReviewURL = `https://63fe9c51c5c800a72382eca5.mockapi.io/Promineo_Tech_Week12/happyfoods/${deleteReviewID}`;
+    $.ajax({
+      //return the ajax request
+      url: deleteReviewURL,
+      type: "DELETE", //set the type of request to be a DELETE request
+      crossDomain: true, //set the cross domain to be true
+    });
+    setTimeout(() => {
+      getReviews();
+    }, "100");
+  });
+}
+
 //TODO Update Existing review Data by ID
+
+function editExistingReview(editReviewID) {
+  console.log("Editing review", editReviewID);
+  let editReviewBtn = document.getElementById(`edit-btn-${editReviewID}`);
+  console.log(editReviewID);
+  editReviewBtn.addEventListener("click", () => {
+    console.log("You have edited your review", editReviewID);
+    let editReviewURL = `https://63fe9c51c5c800a72382eca5.mockapi.io/Promineo_Tech_Week12/happyfoods/${editReviewID}`;
+
+    //
+
+    // $.ajax({
+    //   //return the ajax request
+    //   url: editReviewURL,
+    //   data: JSON.stringify({
+    //     Stars: reviewData.Stars,
+    //     Review: reviewData.Review,
+    //   }), //pass the food group to be created and turns it into JSON data
+    //   dataType: "json", //set the data type to be json
+    //   type: "PUT", //set the type of request to be a POST request
+    //   contentType: "application/json", //set the content type to be json
+    //   crossDomain: true, //set the cross domain to be true
+    // });
+    setTimeout(() => {
+      getReviews();
+    }, "100");
+  });
+}
 
 // Call the createFoodApp function to display a random recipe on page load
 createFoodApp();

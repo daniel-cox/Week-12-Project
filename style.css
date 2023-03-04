@@ -96,10 +96,24 @@ button.btn.btn-primary.mt-2 {
   padding-bottom: 0rem;
 }
 
+.card.bottom-card {
+  margin-top: 1rem;
+}
+
+#foodImageCard {
+  padding: 0.5rem;
+}
+
+button.btn.btn-danger {
+  float: right;
+  margin: 5px;
+}
+
 /* Button Styling */
 #submitReview {
   display: inherit;
   margin: 0 auto;
+  margin-bottom: 1rem;
 }
 
 /* Form Label Styling */
