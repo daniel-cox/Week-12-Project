@@ -159,7 +159,7 @@ async function getReviews() {
   console.log("getting reviews");
   try {
     // Fetch review data from mock API
-    const reviewData = await $.get(
+    let reviewData = await $.get(
       "https://63fe9c51c5c800a72382eca5.mockapi.io/Promineo_Tech_Week12/happyfoods"
     );
 
@@ -252,51 +252,141 @@ function deleteExistingReview(deleteReviewID) {
 
 //TODO Update Existing review Data by ID
 
-function newReview() {
+//NOTE This function creates a new modal for the user to edit their review
+// async function editReview() {
+//   let FoodValueArray = [];
+//   // Get the edit form and create a new modal element
+//   let editForm = document.getElementById("editForm");
+//   let reviewModal = document.createElement("modal");
+
+//   // Initialize variables for closing and pausing the modal
+//   let closeModal = false;
+//   let pauseModal = true;
+
+//   // Set the HTML for the modal, including star ratings and review text area
+//   reviewModal.innerHTML = "";
+//   reviewModal.innerHTML = html`
+//     <div id="rating">
+//       <span class="star" value="star-1" data-value="1">&#9733;</span>
+//       <span class="star" value="star-2" data-value="2">&#9733;</span>
+//       <span class="star" value="star-3" data-value="3">&#9733;</span>
+//       <span class="star" value="star-4" data-value="4">&#9733;</span>
+//       <span class="star" value="star-5" data-value="5">&#9733;</span>
+//     </div>
+
+//     <label for="foodRatingLabel" class="form-label"
+//       >Update your Review (max 150 characters)</label
+//     >
+//     <textarea
+//       class="form-control"
+//       id="editFoodRatingTextArea"
+//       rows="5"
+//       maxlength="150"
+//     ></textarea>
+//     <button type="button" class="btn btn-primary mt-2" id="editReview">
+//       Update Review
+//     </button>
+//   `;
+
+//   // Append the modal to the edit form
+//   editForm.appendChild(reviewModal);
+
+//   // Wrap the event listener in a Promise and wait for it to resolve
+//   const editReviewBtn = document.getElementById("editReview");
+//   await new Promise((resolve) => {
+//     editReviewBtn.addEventListener("click", () => {
+//       console.log("review Paused, editing review");
+//       pauseModal = false;
+//       const editFoodRatingTextArea = document.getElementById(
+//         "editFoodRatingTextArea"
+//       ).value;
+//       console.log("edit review btn", editFoodRatingTextArea);
+//       FoodValueArray.push(editFoodRatingTextArea);
+//       resolve();
+//     });
+//   });
+
+//   console.log("edit form div", editForm);
+//   return FoodValueArray;
+// }
+
+async function editReview() {
+  let FoodValueArray = [];
+  // Get the edit form and create a new modal element
   let editForm = document.getElementById("editForm");
   let reviewModal = document.createElement("modal");
+
+  // Initialize variables for closing and pausing the modal
   let closeModal = false;
+  let pauseModal = true;
 
-  while (closeModal === false) {
-    reviewModal.innerHTML = "";
-    reviewModal.innerHTML = html`
-      <div id="rating">
-        <span class="star" value="star-1" data-value="1">&#9733;</span>
-        <span class="star" value="star-2" data-value="2">&#9733;</span>
-        <span class="star" value="star-3" data-value="3">&#9733;</span>
-        <span class="star" value="star-4" data-value="4">&#9733;</span>
-        <span class="star" value="star-5" data-value="5">&#9733;</span>
-      </div>
-
-      <label for="foodRatingLabel" class="form-label"
-        >Update your Review (max 150 characters)</label
-      >
-      <textarea
-        class="form-control"
-        id="foodRatingTextArea"
-        rows="5"
-        maxlength="150"
-      ></textarea>
-      <button type="button" class="btn btn-primary mt-2" id="submitReview">
-        Update Review
-      </button>
-    `;
-    editForm.appendChild(reviewModal);
-
-    // need to get values of the stars & review form
-    if ()
-
-    // after the values have been obtained, close the modal
-    // set close modal equal to true
-
-    closeModal = true;
-  }
-  closeModal = false;
+  // Set the HTML for the modal, including star ratings and review text area
   reviewModal.innerHTML = "";
+  reviewModal.innerHTML = html`
+    <div id="rating">
+      <span class="star" value="star-1" data-value="1">&#9733;</span>
+      <span class="star" value="star-2" data-value="2">&#9733;</span>
+      <span class="star" value="star-3" data-value="3">&#9733;</span>
+      <span class="star" value="star-4" data-value="4">&#9733;</span>
+      <span class="star" value="star-5" data-value="5">&#9733;</span>
+    </div>
 
-  console.log(editForm);
+    <label for="foodRatingLabel" class="form-label"
+      >Update your Review (max 150 characters)</label
+    >
+    <textarea
+      class="form-control"
+      id="editFoodRatingTextArea"
+      rows="5"
+      maxlength="150"
+    ></textarea>
+    <button type="button" class="btn btn-primary mt-2" id="editReview">
+      Update Review
+    </button>
+  `;
+
+  // Append the modal to the edit form
+  editForm.appendChild(reviewModal);
+
+  // Add event listeners to the stars to update the selected rating value
+  const stars = document.querySelectorAll(".star");
+  // Add event listener to each star
+  stars.forEach((star) => {
+    star.addEventListener("click", () => {
+      const ratingValue = star.getAttribute("data-value");
+      console.log(`Selected rating value: ${ratingValue}`);
+
+      // Remove all previous star values from the array
+      FoodValueArray = [];
+      // Push the selected star value to the array
+      FoodValueArray.push(ratingValue);
+
+      // Update the CSS to highlight the selected star
+      stars.forEach((s) => s.classList.remove("star-selected"));
+      star.classList.add("star-selected");
+    });
+  });
+
+  // Wrap the event listener in a Promise and wait for it to resolve
+  const editReviewBtn = document.getElementById("editReview");
+  await new Promise((resolve) => {
+    editReviewBtn.addEventListener("click", () => {
+      console.log("review Paused, editing review");
+      pauseModal = false;
+      const editFoodRatingTextArea = document.getElementById(
+        "editFoodRatingTextArea"
+      ).value;
+      console.log("edit review btn", editFoodRatingTextArea);
+      FoodValueArray.push(editFoodRatingTextArea);
+      resolve();
+    });
+  });
+
+  console.log("edit form div", editForm);
+  return FoodValueArray;
 }
 
+//NOTE This function is called when the user clicks the "Edit Review" button for an existing review
 function editExistingReview(editReviewID) {
   console.log("Editing review", editReviewID);
   let editReviewBtn = document.getElementById(`edit-btn-${editReviewID}`);
@@ -306,26 +396,35 @@ function editExistingReview(editReviewID) {
     let editReviewURL = `https://63fe9c51c5c800a72382eca5.mockapi.io/Promineo_Tech_Week12/happyfoods/${editReviewID}`;
 
     //have a form specifically for editing the review
+
     // pass stars and review values into 268/269
 
-    newReview();
-    let newStarRating = "";
-    let newReviewData = "";
-    // $.ajax({
-    //   //return the ajax request
-    //   url: editReviewURL,
-    //   data: JSON.stringify({
-    //     Stars: reviewData.Stars,
-    //     Review: reviewData.Review,
-    //   }), //pass the food group to be created and turns it into JSON data
-    //   dataType: "json", //set the data type to be json
-    //   type: "PUT", //set the type of request to be a POST request
-    //   contentType: "application/json", //set the content type to be json
-    //   crossDomain: true, //set the cross domain to be true
-    // });
-    // setTimeout(() => {
-    //   getReviews();
-    // }, "100");
+    async function updateReview() {
+      let FoodeditVar = await editReview();
+      console.log("after function has ran", FoodeditVar);
+      let newStarRating = FoodeditVar[0];
+      let newReviewData = FoodeditVar[1];
+      console.log(newReviewData);
+
+      $.ajax({
+        //return the ajax request
+        url: editReviewURL,
+        data: JSON.stringify({
+          Stars: newStarRating,
+          Review: newReviewData,
+        }), //pass the food group to be created and turns it into JSON data
+        dataType: "json", //set the data type to be json
+        type: "PUT", //set the type of request to be a POST request
+        contentType: "application/json", //set the content type to be json
+        crossDomain: true, //set the cross domain to be true
+      });
+
+      // NOTE timeout being set for getting reviews
+      setTimeout(() => {
+        getReviews();
+      }, "100");
+    }
+    updateReview();
   });
 }
 
