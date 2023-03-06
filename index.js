@@ -11,7 +11,7 @@ let html = (strings, ...values) => {
 let submitBtn = document.getElementById("submitBtn");
 
 async function postReview(reviewData, foodTitleReview) {
-  console.log("testing the post", reviewData);
+  // console.log("testing the post", reviewData);
   let reviewPostURL =
     "https://63fe9c51c5c800a72382eca5.mockapi.io/Promineo_Tech_Week12/happyfoods";
   return await $.ajax({
@@ -35,7 +35,7 @@ async function createFoodApp(foodGroup) {
   const apikey = "4415612910a64dc9a7243128dc4b6ac0";
   const apiEndPointUrl = `https://api.spoonacular.com/recipes/random?apiKey=${apikey}`;
 
-  console.log("createFoodApp foodGroup");
+  // console.log("createFoodApp foodGroup");
 
   //Make a GET request to the API to retrieve random recipe data
   const apiData = await $.ajax({
@@ -43,14 +43,15 @@ async function createFoodApp(foodGroup) {
     type: "GET",
     contentType: "application/json",
   }).catch((error) => {
-    console.log("Oh no there was an error:", error);
+    // console.log("Oh no there was an error:", error);
   });
+
+  //NOTE - uncomment only if API is not working, then comment lines 41-47
 
   // Create an object called "apiData" that contains an array called "recipes"
   // let apiData = {
   //   recipes: [
   //     {
-  //       // Adds an object to the "recipes" array
   //       id: 123,
   //       title: "Chicken Pasta Salad",
   //       instructions:
@@ -59,7 +60,21 @@ async function createFoodApp(foodGroup) {
   //   ],
   // };
 
-  console.log(apiData.recipes);
+  // console.log(apiData.recipes);
+
+  async function searchFood() {
+    const searchQuery = document.getElementById("foodSearch").value;
+    const apiEndPointUrl =
+      "https://api.spoonacular.com/recipes/findByIngredients?apiKey=4415612910a64dc9a7243128dc4b6ac0=" +
+      searchQuery;
+
+    fetch(apiEndPointUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => console.error(error));
+  }
 
   // Extract relevant recipe data from the API response
   let recipeData = apiData.recipes[0];
@@ -119,13 +134,13 @@ class StoredStarProperties {
 
 // Add an event listener to the submit button that runs a function when clicked
 submitReviewBtn.addEventListener("click", () => {
-  console.log("this is a test");
+  // console.log("this is a test");
 
   let newReviewInstance = new StoredStarProperties();
 
   //Get all the elements with the class "star"
   let currentStars = document.querySelectorAll(".star");
-  console.log(currentStars);
+  // console.log(currentStars);
 
   //Loop through each element in the "currentStars" Nodelist
   for (let i = 0; i < currentStars.length; i++) {
@@ -139,11 +154,11 @@ submitReviewBtn.addEventListener("click", () => {
 
   // Get the value of the text area with the ID "foodRatingTextArea"
   let StoredReview = document.getElementById("foodRatingTextArea").value;
-  console.log("stored data", StoredReview);
+  // console.log("stored data", StoredReview);
 
   // Set the Review property of newReviewInstance to the stored review
   newReviewInstance.Review = StoredReview;
-  console.log("incremented star rating", newReviewInstance);
+  // console.log("incremented star rating", newReviewInstance);
   let foodTitle = document.querySelector(".foodTitle").textContent;
   // console.log("logging food title", foodTitle.textContent);
 
@@ -156,7 +171,7 @@ submitReviewBtn.addEventListener("click", () => {
 
 // Asynchronously get review data from Mock API
 async function getReviews() {
-  console.log("getting reviews");
+  // console.log("getting reviews");
   try {
     // Fetch review data from mock API
     let reviewData = await $.get(
@@ -166,9 +181,13 @@ async function getReviews() {
     // Get a reference to the review container element
     let reviewContainer = document.getElementById("reviewContainer");
     reviewContainer.innerHTML = "";
+    let bottomCard = document.querySelectorAll(".bottom-card");
+    bottomCard[0].style.opacity = 0;
+    console.log("bottom card error", bottomCard);
+
     // Loop through the array and create a new review element for each review
     reviewData.forEach((review) => {
-      console.log(review);
+      // console.log(review);
       // Create a new review element
       let reviewElement = document.createElement("div");
       review.id;
@@ -179,7 +198,7 @@ async function getReviews() {
             id="delete-btn-${review.id}"
             class="btn btn-danger"
           >
-            x
+            Delete Review
           </button>
           <br />
           <br />
@@ -205,6 +224,12 @@ async function getReviews() {
         deleteExistingReview(review.id);
       }, "0");
       // Append the review element to the review container
+
+      setTimeout(() => {
+        bottomCard[0].style.opacity = 1;
+        bottomCard[0].style.transition = "opacity 4s ease-in";
+      }, "500");
+
       reviewContainer.appendChild(reviewElement);
     });
   } catch (error) {
@@ -216,7 +241,7 @@ async function getReviews() {
 }
 
 function RetrieveReviews(RetrieveReviews) {
-  console.log("Review Data displayed here:", RetrieveReviews);
+  // console.log("Review Data displayed here:", RetrieveReviews);
 }
 
 // let foodReviews = document.getElementById("reviewContainer")
@@ -231,12 +256,12 @@ getReviews();
 //TODO Delete specific reviews by ID
 
 function deleteExistingReview(deleteReviewID) {
-  console.log("Deleting review", deleteReviewID);
+  // console.log("Deleting review", deleteReviewID);
 
   let deleteReviewBtn = document.getElementById(`delete-btn-${deleteReviewID}`);
-  console.log(deleteReviewBtn);
+  // console.log(deleteReviewBtn);
   deleteReviewBtn.addEventListener("click", () => {
-    console.log("review has been deleted");
+    // console.log("review has been deleted");
     let deleteReviewURL = `https://63fe9c51c5c800a72382eca5.mockapi.io/Promineo_Tech_Week12/happyfoods/${deleteReviewID}`;
     $.ajax({
       //return the ajax request
@@ -252,64 +277,6 @@ function deleteExistingReview(deleteReviewID) {
 
 //TODO Update Existing review Data by ID
 
-//NOTE This function creates a new modal for the user to edit their review
-// async function editReview() {
-//   let FoodValueArray = [];
-//   // Get the edit form and create a new modal element
-//   let editForm = document.getElementById("editForm");
-//   let reviewModal = document.createElement("modal");
-
-//   // Initialize variables for closing and pausing the modal
-//   let closeModal = false;
-//   let pauseModal = true;
-
-//   // Set the HTML for the modal, including star ratings and review text area
-//   reviewModal.innerHTML = "";
-//   reviewModal.innerHTML = html`
-//     <div id="rating">
-//       <span class="star" value="star-1" data-value="1">&#9733;</span>
-//       <span class="star" value="star-2" data-value="2">&#9733;</span>
-//       <span class="star" value="star-3" data-value="3">&#9733;</span>
-//       <span class="star" value="star-4" data-value="4">&#9733;</span>
-//       <span class="star" value="star-5" data-value="5">&#9733;</span>
-//     </div>
-
-//     <label for="foodRatingLabel" class="form-label"
-//       >Update your Review (max 150 characters)</label
-//     >
-//     <textarea
-//       class="form-control"
-//       id="editFoodRatingTextArea"
-//       rows="5"
-//       maxlength="150"
-//     ></textarea>
-//     <button type="button" class="btn btn-primary mt-2" id="editReview">
-//       Update Review
-//     </button>
-//   `;
-
-//   // Append the modal to the edit form
-//   editForm.appendChild(reviewModal);
-
-//   // Wrap the event listener in a Promise and wait for it to resolve
-//   const editReviewBtn = document.getElementById("editReview");
-//   await new Promise((resolve) => {
-//     editReviewBtn.addEventListener("click", () => {
-//       console.log("review Paused, editing review");
-//       pauseModal = false;
-//       const editFoodRatingTextArea = document.getElementById(
-//         "editFoodRatingTextArea"
-//       ).value;
-//       console.log("edit review btn", editFoodRatingTextArea);
-//       FoodValueArray.push(editFoodRatingTextArea);
-//       resolve();
-//     });
-//   });
-
-//   console.log("edit form div", editForm);
-//   return FoodValueArray;
-// }
-
 async function editReview() {
   let FoodValueArray = [];
   // Get the edit form and create a new modal element
@@ -324,11 +291,11 @@ async function editReview() {
   reviewModal.innerHTML = "";
   reviewModal.innerHTML = html`
     <div id="rating">
-      <span class="star" value="star-1" data-value="1">&#9733;</span>
-      <span class="star" value="star-2" data-value="2">&#9733;</span>
-      <span class="star" value="star-3" data-value="3">&#9733;</span>
-      <span class="star" value="star-4" data-value="4">&#9733;</span>
-      <span class="star" value="star-5" data-value="5">&#9733;</span>
+      <span class="editStar" value="star-1" data-value="1">&#9733;</span>
+      <span class="editStar" value="star-2" data-value="2">&#9733;</span>
+      <span class="editStar" value="star-3" data-value="3">&#9733;</span>
+      <span class="editStar" value="star-4" data-value="4">&#9733;</span>
+      <span class="editStar" value="star-5" data-value="5">&#9733;</span>
     </div>
 
     <label for="foodRatingLabel" class="form-label"
@@ -349,50 +316,88 @@ async function editReview() {
   editForm.appendChild(reviewModal);
 
   // Add event listeners to the stars to update the selected rating value
-  const stars = document.querySelectorAll(".star");
+  const stars = document.querySelectorAll(".editStar");
+
   // Add event listener to each star
   stars.forEach((star) => {
     star.addEventListener("click", () => {
       const ratingValue = star.getAttribute("data-value");
-      console.log(`Selected rating value: ${ratingValue}`);
+      // console.log(`Selected rating value: ${ratingValue}`);
 
       // Remove all previous star values from the array
       FoodValueArray = [];
       // Push the selected star value to the array
       FoodValueArray.push(ratingValue);
 
-      // Update the CSS to highlight the selected star
-      stars.forEach((s) => s.classList.remove("star-selected"));
-      star.classList.add("star-selected");
+      // Update the CSS to highlight the selected edited star
+      stars.forEach((s) => s.classList.remove("editStar-selected"));
+      star.classList.add("editStar-selected");
     });
   });
 
   // Wrap the event listener in a Promise and wait for it to resolve
   const editReviewBtn = document.getElementById("editReview");
   await new Promise((resolve) => {
+    console.log("this is a test");
+
+    let newReviewInstance = new StoredStarProperties();
+
+    //Get all the elements with the class "star"
+    let currentStars = document.querySelectorAll(".editStar");
+
+    stars.forEach((star) => {
+      star.addEventListener("click", () => {
+        console.log("test", star);
+        let value = star.getAttribute("data-value");
+        console.log("test2", value);
+        // Remove active class from all stars
+        stars.forEach((s) => s.classList.remove("active"));
+
+        // Add active class to clicked star and all previous stars
+        for (let i = 0; i < value; i++) {
+          console.log("test3", stars[i]);
+          stars[i].classList.add("active");
+        }
+      });
+    });
+
+    console.log(currentStars);
+
+    //Loop through each element in the "currentStars" Nodelist
+    for (let i = 0; i < currentStars.length; i++) {
+      let activeStars = currentStars[i].classList.contains("active");
+
+      // Check if the current star is active
+      if (activeStars === true) {
+        newReviewInstance.Stars++;
+      }
+    }
+
     editReviewBtn.addEventListener("click", () => {
-      console.log("review Paused, editing review");
+      // console.log("review Paused, editing review");
+
       pauseModal = false;
       const editFoodRatingTextArea = document.getElementById(
         "editFoodRatingTextArea"
       ).value;
-      console.log("edit review btn", editFoodRatingTextArea);
+      // console.log("edit review btn", editFoodRatingTextArea);
       FoodValueArray.push(editFoodRatingTextArea);
+      reviewModal.innerHTML = "";
       resolve();
     });
   });
 
-  console.log("edit form div", editForm);
+  // console.log("edit form div", editForm);
   return FoodValueArray;
 }
 
 //NOTE This function is called when the user clicks the "Edit Review" button for an existing review
 function editExistingReview(editReviewID) {
-  console.log("Editing review", editReviewID);
+  // console.log("Editing review", editReviewID);
   let editReviewBtn = document.getElementById(`edit-btn-${editReviewID}`);
-  console.log(editReviewID);
+  // console.log(editReviewID);
   editReviewBtn.addEventListener("click", () => {
-    console.log("You have edited your review", editReviewID);
+    // console.log("You have edited your review", editReviewID);
     let editReviewURL = `https://63fe9c51c5c800a72382eca5.mockapi.io/Promineo_Tech_Week12/happyfoods/${editReviewID}`;
 
     //have a form specifically for editing the review
@@ -401,10 +406,10 @@ function editExistingReview(editReviewID) {
 
     async function updateReview() {
       let FoodeditVar = await editReview();
-      console.log("after function has ran", FoodeditVar);
+      // console.log("after function has ran", FoodeditVar);
       let newStarRating = FoodeditVar[0];
       let newReviewData = FoodeditVar[1];
-      console.log(newReviewData);
+      // console.log(newReviewData);
 
       $.ajax({
         //return the ajax request
@@ -427,6 +432,5 @@ function editExistingReview(editReviewID) {
     updateReview();
   });
 }
-
 // Call the createFoodApp function to display a random recipe on page load
 createFoodApp();

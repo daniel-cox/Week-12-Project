@@ -51,7 +51,12 @@ ion-icon {
   display: flex;
   margin: 0 auto;
   max-width: 95%;
+  border: none;
   width: 500px;
+}
+
+div#reviewContainer {
+  padding-left: 1em;
 }
 
 /* Ordered List Styling */
@@ -129,5 +134,24 @@ label.form-label {
 
 /* Active Star Styling */
 .star.active {
+  color: gold !important;
+}
+
+.star-selected {
+  color: gold;
+}
+
+/* Star Styling */
+.editStar {
+  color: #ddd;
+  cursor: pointer;
+}
+
+/* Active Star Styling */
+.editStar.active {
+  color: gold !important;
+}
+
+.editStar-selected {
   color: gold;
 }
