@@ -90,6 +90,7 @@ form {
 button.btn.btn-primary.mt-2 {
   float: right;
   margin-right: 10px;
+  margin-bottom: 2vh;
 }
 
 /* Rating Styling */
@@ -103,6 +104,11 @@ button.btn.btn-primary.mt-2 {
 
 .card.bottom-card {
   margin-top: 1rem;
+  margin-bottom: 10rem;
+}
+
+button#edit-btn-1 {
+  margin-top: 1vh;
 }
 
 #foodImageCard {

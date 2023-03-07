@@ -62,19 +62,20 @@ async function createFoodApp(foodGroup) {
 
   // console.log(apiData.recipes);
 
-  async function searchFood() {
-    const searchQuery = document.getElementById("foodSearch").value;
-    const apiEndPointUrl =
-      "https://api.spoonacular.com/recipes/findByIngredients?apiKey=4415612910a64dc9a7243128dc4b6ac0=" +
-      searchQuery;
+  //TODO -  Search functionality to be added later
+  // async function searchFood() {
+  //   const searchQuery = document.getElementById("foodSearch").value;
+  //   const apiEndPointUrl =
+  //     "https://api.spoonacular.com/recipes/findByIngredients?apiKey=4415612910a64dc9a7243128dc4b6ac0=" +
+  //     searchQuery;
 
-    fetch(apiEndPointUrl)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => console.error(error));
-  }
+  //   fetch(apiEndPointUrl)
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log(data);
+  //     })
+  //     .catch((error) => console.error(error));
+  // }
 
   // Extract relevant recipe data from the API response
   let recipeData = apiData.recipes[0];
@@ -243,12 +244,6 @@ async function getReviews() {
 function RetrieveReviews(RetrieveReviews) {
   // console.log("Review Data displayed here:", RetrieveReviews);
 }
-
-// let foodReviews = document.getElementById("reviewContainer")
-// let reviewData = await $.get(
-//   "https://63fe9c51c5c800a72382eca5.mockapi.io/Promineo_Tech_Week12/happyfoods"
-// );
-// console.log(reviewData);
 
 // Call the GetReviews function to retrieve review data from the API
 getReviews();
